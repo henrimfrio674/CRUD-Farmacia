@@ -1,24 +1,23 @@
 package com.generation.farmacia.Model;
 
-import java.util.List;
-
-import org.hibernate.annotations.CascadeType;
+import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "TB_categoria")
-public class Categoria {
+@Table(name = "TB_produto")
+public class Produto {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -30,11 +29,13 @@ public class Categoria {
 	@NotBlank(message = "Obrigatorio")
 	@Size(max = 500, message = "Resuma um pouco a descrição")
 	private String descricao;
+
+	@NotNull(message = "Obrigatório")
+	private BigDecimal preco;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "categoria")
-	@JsonIgnoreProperties("categoria")
-	private List<Produto> produto;
-	
+	@ManyToOne
+	@JsonIgnoreProperties("Produto")
+	private Categoria categoria;
 	public Long getId() {
 		return id;
 	}
@@ -59,14 +60,21 @@ public class Categoria {
 		this.descricao = descricao;
 	}
 
-	public List<Produto> getProduto() {
-		return produto;
+	public BigDecimal getPreco() {
+		return preco;
 	}
 
-	public void setProduto(List<Produto> produto) {
-		this.produto = produto;
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
 	}
-	
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
 	
 	
 }
